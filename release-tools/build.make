@@ -74,7 +74,7 @@ endif
 # separated by semicolon. An empty variable or empty entry (= just a
 # semicolon) builds for the default platform of the current Go
 # toolchain.
-BUILD_PLATFORMS =
+BUILD_PLATFORMS = linux amd64 amd64
 
 # Add go ldflags using LDFLAGS at the time of compilation.
 IMPORTPATH_LDFLAGS = -X main.version=$(REV)

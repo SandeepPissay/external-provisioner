@@ -791,6 +791,25 @@ func (p *csiProvisioner) Provision(ctx context.Context, options controller.Provi
 	pvName := req.Name
 	provisionerCredentials := req.Secrets
 
+	// --- Begin added by Sandeep for POC of LinkedClone PVC ---
+	copyParams := func(origMap map[string]string) map[string]string {
+		newMap := make(map[string]string)
+		if origMap == nil {
+			return newMap
+		}
+		for k, v := range origMap {
+			newMap[k] = v
+		}
+		return newMap
+	}
+	if cloneType, ok := options.PVC.ObjectMeta.Annotations["vmware.com/clone-type"]; ok {
+		klog.V(4).Infof("Got cloneType : %s", cloneType)
+		// PVC annotation overrides the storagepool specified in StorageClass
+		req.Parameters = copyParams(options.StorageClass.Parameters)
+		req.Parameters["vmware.com/clone-type"] = cloneType
+	}
+	// --- End added by Sandeep for POC of LinkedClone PVC ---
+
 	createCtx := markAsMigrated(ctx, result.migratedVolume)
 	createCtx, cancel := context.WithTimeout(createCtx, p.timeout)
 	defer cancel()

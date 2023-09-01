@@ -13,6 +13,9 @@
 # limitations under the License.
 
 CMDS=csi-provisioner
+REGISTRY_NAME="harbor-repo.vmware.com/calatrava/ssrinivas-ext-provisioner"
+IMAGE_TAGS="linked-clone1"
+BUILD_PLATFORMS="linux amd64 amd64"
 all: build
 
 include release-tools/build.make
